@@ -1,0 +1,258 @@
+table Invoices
+	lineageTag: 587b3899-4d82-4db5-8f7c-eb78c43dc3b5
+
+	measure 'Open Invoices' = ```
+			
+			  CALCULATE ( COUNTROWS ( Invoices ), Invoices[outstanding_amount] > 0 )
+			```
+		formatString: 0
+		lineageTag: 5aaf7d43-b9ea-4c1d-9754-d5478a1d0f95
+
+	measure 'Total Outstanding' =
+			
+			CALCULATE ( SUM ( Invoices[outstanding_gbp] ), Invoices[outstanding_amount] > 0 )
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: a3e55c1d-e410-41f3-8cdf-b6c130b4ad9f
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure 'Overdue Outstanding' =
+			
+			CALCULATE ( [Total Outstanding], Invoices[days_overdue] > 0 )
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: 9a9262cd-a4f8-4532-b9c8-8cf9d4accb7c
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure '% Overdue' =
+			
+			DIVIDE ( [Overdue Outstanding], [Total Outstanding] )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 49909b2f-b884-4c21-af0d-bd99750785c1
+
+	measure '90+ Outstanding' =
+			
+			CALCULATE ( [Total Outstanding], Invoices[ageing_bucket] = "90+" )
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: 3d49cd97-bc0d-4e65-9f11-a1e515fde88f
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure 'Customers Overdue' =
+			
+			CALCULATE (
+			    DISTINCTCOUNT ( Invoices[customer_id] ),
+			    Invoices[outstanding_amount] > 0,
+			    Invoices[days_overdue] > 0
+			)
+		formatString: 0
+		lineageTag: 41b1ce05-eada-403d-8e2a-60d6002a3e9d
+
+	measure 'Not Due' =
+			
+			CALCULATE ( [Total Outstanding], Invoices[ageing_bucket] = "Not due" )
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: c0aa8723-677c-45ad-bb4f-e9219cb10995
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure '1-30 Days' =
+			
+			CALCULATE ( [Total Outstanding], Invoices[ageing_bucket] = "1-30" )
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: 46241fdc-79a4-4490-8bd2-1f8384fb14fd
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure '31-60 Days' =
+			
+			CALCULATE ( [Total Outstanding], Invoices[ageing_bucket] = "31-60" )
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: e4baea34-a5a8-429b-af12-63d916bed5e5
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure '61-90 Days' =
+			
+			CALCULATE ( [Total Outstanding], Invoices[ageing_bucket] = "61-90" )
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: 7a3004c3-53d7-4c90-a45d-722fd557502f
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure 'Top 10 Share' =
+			
+			VAR Top10 =
+			    TOPN ( 10, ALL ( Customers[Customer] ), [Total Outstanding] )
+			RETURN
+			    DIVIDE (
+			        SUMX ( Top10, [Total Outstanding] ),
+			        CALCULATE ( [Total Outstanding], ALL ( Customers[Customer] ) )
+			    )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: fe82808f-4ee9-4a6f-8d16-138c324b77b5
+
+	column invoice_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5cf82c43-b018-4409-a013-72640860e15a
+		summarizeBy: none
+		sourceColumn: invoice_id
+
+		annotation SummarizationSetBy = User
+
+	column customer_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: deab4000-a5c2-4f26-bc82-2d33fc8a3c97
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 85f79691-1608-454a-b5c5-a6aaa54e0cde
+		summarizeBy: none
+		sourceColumn: invoice_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column due_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 53898d3a-89a8-496f-8f0a-9f856c6dcd72
+		summarizeBy: none
+		sourceColumn: due_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Currency
+		dataType: string
+		lineageTag: 20699b8b-fe45-4ac4-ab6e-e49c0cc9ae64
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoice_amount
+		dataType: double
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: e2577d40-2aa7-418e-93e6-5e10392935bb
+		summarizeBy: sum
+		sourceColumn: invoice_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	column amount_paid
+		dataType: double
+		lineageTag: 60a7cb5c-3427-468a-a9b8-c738dbcd7290
+		summarizeBy: sum
+		sourceColumn: amount_paid
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column outstanding_amount
+		dataType: double
+		lineageTag: 1150b616-8146-434f-9079-352d1ffc91ad
+		summarizeBy: sum
+		sourceColumn: outstanding_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column days_overdue
+		dataType: int64
+		formatString: 0
+		lineageTag: 84e1fa92-8664-4fb5-ad2c-824e22530801
+		summarizeBy: none
+		sourceColumn: days_overdue
+
+		annotation SummarizationSetBy = User
+
+	column ageing_bucket
+		dataType: string
+		lineageTag: b0e00532-6d01-4a15-954c-5685617f9db0
+		summarizeBy: none
+		sourceColumn: ageing_bucket
+		sortByColumn: bucket_order
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column bucket_order
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 61c63f41-af1b-4e38-9934-94637ef8c40d
+		summarizeBy: none
+		sourceColumn: bucket_order
+
+		annotation SummarizationSetBy = User
+
+	column fx_rate_invoice
+		dataType: double
+		isHidden
+		lineageTag: 94de246c-e1c9-487b-ac69-cc5f362160ab
+		summarizeBy: none
+		sourceColumn: fx_rate_invoice
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fx_rate_closing
+		dataType: double
+		isHidden
+		lineageTag: 7cf669cd-2b12-4471-a24a-348e33340694
+		summarizeBy: none
+		sourceColumn: fx_rate_closing
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column invoice_amount_gbp
+		dataType: double
+		lineageTag: 4bea3dc9-20ca-46ca-b098-8b3067488e1f
+		summarizeBy: sum
+		sourceColumn: invoice_amount_gbp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column outstanding_gbp
+		dataType: double
+		lineageTag: 1df57ec8-0655-4218-9edb-b23e0db2a43f
+		summarizeBy: sum
+		sourceColumn: outstanding_gbp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Invoices = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost", "debtor_ageing"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "v_invoice_outstanding"]}[Data],
+				    #"Renamed Columns" = Table.RenameColumns(#"Navigation 1",{{"currency", "Currency"}})
+				in
+				  #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+

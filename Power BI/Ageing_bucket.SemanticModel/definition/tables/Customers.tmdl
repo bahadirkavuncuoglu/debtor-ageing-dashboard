@@ -1,0 +1,57 @@
+table Customers
+	lineageTag: 574d3259-aef6-4392-bda6-2d570120e3bd
+
+	column customer_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 42a7c03c-1d6f-4a0a-8815-3faa04d6a485
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_name
+		dataType: string
+		lineageTag: 24a29c9a-3e26-4550-91dc-d8cac98802e0
+		summarizeBy: none
+		sourceColumn: customer_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 0b61be14-e523-46bc-91f4-01dae2bd7f6a
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_terms
+		dataType: int64
+		formatString: 0
+		lineageTag: a4395de7-c03c-44fc-a559-d485dd99d9eb
+		summarizeBy: none
+		sourceColumn: payment_terms
+
+		annotation SummarizationSetBy = User
+
+	column Customer = Customers[customer_name] & " (" & Customers[customer_id] & ")"
+		lineageTag: 38834a4e-ccc7-4781-9e4f-5901413ec296
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Customers = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost", "debtor_ageing"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "customers"]}[Data],
+				    #"Renamed Columns" = Table.RenameColumns(#"Navigation 1",{{"country", "Country"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

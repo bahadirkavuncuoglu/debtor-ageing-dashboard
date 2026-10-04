@@ -1,0 +1,44 @@
+table 'Bubble Options'
+	lineageTag: 1517bfe6-e03c-43f6-93d7-879c513f7811
+
+	measure 'Bubble Size Value' =
+			
+			SWITCH (
+			    SELECTEDVALUE ( 'Bubble Options'[Option], "Open invoices" ),
+			    "Invoices paid (history)", SUM ( 'Payment Behaviour'[invoices_settled] ),
+			    [Open Invoices]
+			)
+		formatString: 0
+		lineageTag: 4f58c8be-6da1-4cf2-9461-c506ab395a1a
+
+	column Option
+		lineageTag: 16b0aa6e-3e4a-475f-9f85-f5dad00e0d02
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Option]
+		sortByColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		isHidden
+		formatString: 0
+		lineageTag: dfb0a0ce-7560-4eaa-8f84-6fda5b9448db
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Order]
+
+		annotation SummarizationSetBy = User
+
+	partition 'Bubble Options' = calculated
+		mode: import
+		source =
+				
+				DATATABLE (
+				    "Option", STRING,
+				    "Order", INTEGER,
+				    { { "Open invoices", 1 }, { "Invoices paid (history)", 2 } }
+				)
+
+	annotation PBI_Id = ae5c12eebd9f40dfb62fe0de088caf67
+

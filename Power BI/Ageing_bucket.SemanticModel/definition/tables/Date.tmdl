@@ -1,0 +1,64 @@
+table Date
+	lineageTag: d3fbd846-7ffc-4d5f-822c-eecba349cb4f
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: Short Date
+		lineageTag: 05bac0f6-89b9-4d8b-998e-a992a933659d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 56102927-6aa0-4917-aec7-09ebaf1ddbde
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = User
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: 6adf08d3-be83-4a48-998a-e42042989ca8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Number]
+
+		annotation SummarizationSetBy = User
+
+	column Month
+		lineageTag: 9b4628f1-701a-45a9-856f-5d56a0a69e5e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month]
+		sortByColumn: 'Month Start'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Start'
+		formatString: Short Date
+		lineageTag: 9829c743-903e-41b2-8b6d-059054c1c52b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Start]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Date = calculated
+		mode: import
+		source =
+				
+				ADDCOLUMNS (
+				    CALENDAR ( DATE ( 2024, 10, 1 ), DATE ( 2026, 12, 31 ) ),
+				    "Year", YEAR ( [Date] ),
+				    "Month Number", MONTH ( [Date] ),
+				    "Month", FORMAT ( [Date], "MMM yyyy" ),
+				    "Month Start", DATE ( YEAR ( [Date] ), MONTH ( [Date] ), 1 )
+				)
+
+	annotation PBI_Id = c3dc01cbe29c469894189f51509cc6ad
+

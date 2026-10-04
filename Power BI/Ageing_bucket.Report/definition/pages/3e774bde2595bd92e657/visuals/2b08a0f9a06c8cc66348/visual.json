@@ -1,0 +1,215 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "2b08a0f9a06c8cc66348",
+  "position": {
+    "x": 436.26241194941866,
+    "y": 15.642875328863617,
+    "z": 1000,
+    "height": 163.38114232368667,
+    "width": 1468.6921836544175,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Invoices"
+                    }
+                  },
+                  "Property": "Total Outstanding"
+                }
+              },
+              "queryRef": "Invoices.Total Outstanding",
+              "nativeQueryRef": "Total Outstanding"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Invoices"
+                    }
+                  },
+                  "Property": "Overdue Outstanding"
+                }
+              },
+              "queryRef": "Invoices.Overdue Outstanding",
+              "nativeQueryRef": "Overdue Outstanding"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Invoices"
+                    }
+                  },
+                  "Property": "90+ Outstanding"
+                }
+              },
+              "queryRef": "Invoices.90+ Outstanding",
+              "nativeQueryRef": "90+ Outstanding"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Invoices"
+                    }
+                  },
+                  "Property": "% Overdue"
+                }
+              },
+              "queryRef": "Invoices.% Overdue",
+              "nativeQueryRef": "% Overdue"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Invoices"
+                    }
+                  },
+                  "Property": "Customers Overdue"
+                }
+              },
+              "queryRef": "Invoices.Customers Overdue",
+              "nativeQueryRef": "Customers Overdue"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DSO Monthly"
+                    }
+                  },
+                  "Property": "Latest Countback DSO"
+                }
+              },
+              "queryRef": "DSO Monthly.Latest Countback DSO",
+              "nativeQueryRef": "Countback DSO, company-wide (days)",
+              "displayName": "Countback DSO, company-wide (days)"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Invoices"
+                  }
+                },
+                "Property": "Total Outstanding"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "044026fc06deb80d1ed2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Invoices"
+              }
+            },
+            "Property": "Total Outstanding"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "23f42704f18439263c65",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Invoices"
+              }
+            },
+            "Property": "Overdue Outstanding"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "339fff8485e24aa38537",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Invoices"
+              }
+            },
+            "Property": "% Overdue"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0db84b7490c570bfb893",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Invoices"
+              }
+            },
+            "Property": "Customers Overdue"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ab9893900bedd19aa8da",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DSO Monthly"
+              }
+            },
+            "Property": "Latest Countback DSO"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "cf98c04cb50778d8e758",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Invoices"
+              }
+            },
+            "Property": "90+ Outstanding"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "e5474a28ad8f11f09647",
+  "position": {
+    "x": 10.428583552575745,
+    "y": 601.381651531868,
+    "z": 6000,
+    "height": 450.16719001951964,
+    "width": 950.73920054315545,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Date"
+                    }
+                  },
+                  "Property": "Month"
+                }
+              },
+              "queryRef": "Date.Month",
+              "nativeQueryRef": "Month",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DSO Monthly"
+                        }
+                      },
+                      "Property": "simple_dso"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(DSO Monthly.simple_dso)",
+              "nativeQueryRef": "Simple DSO",
+              "displayName": "Simple DSO"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DSO Monthly"
+                        }
+                      },
+                      "Property": "countback_dso"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(DSO Monthly.countback_dso)",
+              "nativeQueryRef": "Countback DSO",
+              "displayName": "Countback DSO"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "DSO Monthly"
+                        }
+                      },
+                      "Property": "best_possible_dso"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(DSO Monthly.best_possible_dso)",
+              "nativeQueryRef": "Best Possible DSO",
+              "displayName": "Best Possible DSO"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "lineStyles": [
+        {
+          "properties": {
+            "lineChartType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'linear'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Simple DSO, Countback DSO and Best Possible DSO (Not affected by country or currency filters.)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

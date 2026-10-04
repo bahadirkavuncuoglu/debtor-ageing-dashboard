@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "f7055f12c19ce05b1895",
+  "position": {
+    "x": 10.428583552575745,
+    "y": 139.04778070100994,
+    "z": 0,
+    "height": 128.61919714843418,
+    "width": 517.952983111262,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Collections worklist, as at 30 September 2026, GBP; EUR balances converted at ECB closing rate 30 Sep 2026",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

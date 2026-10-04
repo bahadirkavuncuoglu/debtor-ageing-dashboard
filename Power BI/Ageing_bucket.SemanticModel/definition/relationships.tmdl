@@ -1,0 +1,16 @@
+relationship AutoDetected_0bc536cb-493d-4681-9f23-79bd25b84605
+	fromColumn: Invoices.customer_id
+	toColumn: Customers.customer_id
+
+relationship 705b2fa0-410d-9524-b4ab-d3bfcd2c7188
+	fromColumn: Invoices.invoice_date
+	toColumn: Date.Date
+
+relationship 533fa2fc-75eb-0fb9-eb5e-115ed75357b7
+	fromColumn: 'DSO Monthly'.month_start
+	toColumn: Date.Date
+
+relationship fe10858e-ce0b-cd62-4c2b-b1b1ee664fb1
+	fromColumn: 'Payment Behaviour'.customer_id
+	toColumn: Customers.customer_id
+

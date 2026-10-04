@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Ageing_bucket"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "213e3d05-bf7e-4f47-b209-221b8af580dd"
+  }
+}

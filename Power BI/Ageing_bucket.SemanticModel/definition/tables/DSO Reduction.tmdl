@@ -1,0 +1,26 @@
+table 'DSO Reduction'
+	lineageTag: dd39816f-521a-4d0a-bf17-bd350f5ce7e9
+
+	measure 'DSO Reduction Value' = SELECTEDVALUE('DSO Reduction'[DSO Reduction], 10)
+		formatString: 0
+		lineageTag: 8a169c6d-6085-4022-aa41-efaf36158995
+
+	column 'DSO Reduction'
+		formatString: 0
+		lineageTag: 83f94643-6d0a-4883-8bd4-80b03262ca02
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition 'DSO Reduction' = calculated
+		mode: import
+		source = GENERATESERIES(0, 30, 1)
+
+	annotation PBI_Id = 20c20b95b43e40818d719a0e408f456c
+

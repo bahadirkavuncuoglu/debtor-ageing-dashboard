@@ -1,0 +1,163 @@
+table 'DSO Monthly'
+	lineageTag: 8a71cb6a-3569-412c-b47d-5b762832549e
+
+	measure 'Latest Countback DSO' =
+			
+			VAR LastMonth = MAX ( 'DSO Monthly'[month_start] )
+			RETURN
+			    CALCULATE (
+			        SUM ( 'DSO Monthly'[countback_dso] ),
+			        'DSO Monthly'[month_start] = LastMonth
+			    )
+		formatString: 0.0
+		lineageTag: f022cae8-0d5f-49f2-994f-d68ee7ce04b8
+
+	measure 'Daily Credit Sales' =
+			
+			VAR LastMonth =
+			    CALCULATE ( MAX ( 'DSO Monthly'[month_start] ), REMOVEFILTERS ( 'Date' ) )
+			RETURN
+			    DIVIDE (
+			        CALCULATE (
+			            SUM ( 'DSO Monthly'[credit_sales] ),
+			            REMOVEFILTERS ( 'Date' ),
+			            'DSO Monthly'[month_start] > EDATE ( LastMonth, -12 )
+			        ),
+			        365
+			    )
+		lineageTag: 283e6e73-1f2d-4447-b390-6ff3ab0b6b5a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cash Released' =
+			
+			[DSO Reduction Value] * [Daily Credit Sales]
+		formatString: "£"#,0.00;-"£"#,0.00;"£"#,0.00
+		lineageTag: d8e044a0-e51b-47fb-b033-5bb60570906e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	column month_start
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d377840a-6675-4b6f-bdc4-00a8d67b218a
+		summarizeBy: none
+		sourceColumn: month_start
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column month_end
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6b835b0f-7147-4c4c-b36f-33a97ad8639e
+		summarizeBy: none
+		sourceColumn: month_end
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column credit_sales
+		dataType: double
+		lineageTag: c00dd518-b1c3-433b-b211-714ae57d111d
+		summarizeBy: sum
+		sourceColumn: credit_sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column closing_receivables
+		dataType: double
+		lineageTag: d766f1af-c1e5-429e-b14b-4e7b3155ba6f
+		summarizeBy: none
+		sourceColumn: closing_receivables
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column current_receivables
+		dataType: double
+		lineageTag: a97487f5-436f-499a-ae6f-41c70d46a35b
+		summarizeBy: sum
+		sourceColumn: current_receivables
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column overdue_receivables
+		dataType: double
+		lineageTag: 1fcd7d7a-f53b-4516-b365-6bc7f16b7a09
+		summarizeBy: sum
+		sourceColumn: overdue_receivables
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column overdue_pct
+		dataType: double
+		formatString: 0.0"%"
+		lineageTag: 102cf951-cac6-4aec-9d4e-9c816de09bed
+		summarizeBy: average
+		sourceColumn: overdue_pct
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column simple_dso
+		dataType: double
+		lineageTag: 57b78533-68a1-4675-b4df-140795c36706
+		summarizeBy: average
+		sourceColumn: simple_dso
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column countback_dso
+		dataType: double
+		lineageTag: 92afae30-f6f6-496f-a11a-345a503d864a
+		summarizeBy: average
+		sourceColumn: countback_dso
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column best_possible_dso
+		dataType: double
+		lineageTag: 5ea78318-50bb-4208-8586-9dce203db9a4
+		summarizeBy: average
+		sourceColumn: best_possible_dso
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column days_late
+		dataType: double
+		lineageTag: c3c26028-4bb8-441f-b614-b51620b9995a
+		summarizeBy: average
+		sourceColumn: days_late
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'DSO Monthly' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("localhost", "debtor_ageing"),
+				  #"Navigation 1" = Source{[Schema = "public", Item = "v_dso_monthly"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

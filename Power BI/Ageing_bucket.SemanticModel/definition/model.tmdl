@@ -1,0 +1,25 @@
+model Model
+	culture: en-GB
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-GB
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["Customers","DSO Monthly","Invoices","Payment Behaviour"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Customers
+ref table 'DSO Monthly'
+ref table Invoices
+ref table Date
+ref table 'DSO Reduction'
+ref table 'Payment Behaviour'
+ref table 'Bubble Options'
+
+ref cultureInfo en-GB
+

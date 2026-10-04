@@ -1,0 +1,63 @@
+table 'Payment Behaviour'
+	lineageTag: 7df6cb89-3849-4bd5-bc75-41e985ed8ad6
+
+	column customer_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 34e243f1-d12d-4673-9833-12a5ca6dfa69
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column invoices_settled
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ceb8f19-b1f0-436c-ad8e-7b8304cb8ca2
+		summarizeBy: sum
+		sourceColumn: invoices_settled
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_days_late_weighted
+		dataType: double
+		lineageTag: f067e18d-c93f-4545-a36c-93ae3ea5a848
+		summarizeBy: average
+		sourceColumn: avg_days_late_weighted
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_days_late
+		dataType: double
+		lineageTag: cc0fe844-748e-49f5-a146-ccdba0770c61
+		summarizeBy: average
+		sourceColumn: avg_days_late
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pct_paid_late
+		dataType: double
+		lineageTag: 40c48c14-0261-4761-bcaf-bf48723e0742
+		summarizeBy: average
+		sourceColumn: pct_paid_late
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Payment Behaviour' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "debtor_ageing"),
+				    public_v_customer_payment_behaviour = Source{[Schema="public",Item="v_customer_payment_behaviour"]}[Data]
+				in
+				    public_v_customer_payment_behaviour
+
+	changedProperty = Name
+

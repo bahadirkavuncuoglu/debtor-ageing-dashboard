@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "a74e18bb175058981cc2",
+  "position": {
+    "x": 10.428583552575745,
+    "y": 111.23822456080795,
+    "z": 0,
+    "height": 121.66680811338369,
+    "width": 438.00050920818131,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Debtor ageing overview, as at 30 September 2026, GBP; EUR balances converted at ECB closing rate 30 Sep 2026",
+                    "textStyle": {
+                      "fontSize": "16pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
